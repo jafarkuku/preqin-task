@@ -1,0 +1,14 @@
+fastapi
+uvicorn[standard]
+pymongo[srv]==4.10.1
+pydantic
+pydantic-settings
+python-dotenv
+redis
+pytest
+pytest-asyncio
+pytest-mock
+pytest-cov
+faker
+factory_boy
+httpx

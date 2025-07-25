@@ -1,0 +1,12 @@
+### 1. Create Asset Class - Private Equity
+POST http://localhost:8001/api/asset-classes
+Content-Type: application/json
+
+{
+  "name": "Private Equity",
+  "description": "Private equity investments including buyouts and growth capital",
+  "status": "active"
+}
+### 2. Get All Asset Classes
+GET http://localhost:8001/api/asset-classes/
+Content-Type: application/json

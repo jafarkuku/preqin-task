@@ -1,0 +1,105 @@
+.commitmentId {
+  font-family: monospace;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  font-weight: 500;
+}
+
+.assetClassCell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.colorIndicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.assetClassName {
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.amount {
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.currency {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  background-color: var(--secondary);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.percentageCell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.percentage {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.progressBar {
+  width: 80px;
+  height: 6px;
+  background-color: var(--muted);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background-color: var(--primary);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--muted-foreground);
+  padding: 4rem 2rem;
+  min-height: 300px;
+}
+
+/* Override for commitment table header total */
+.commitmentTable :global(.count) {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary);
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+.emptyIcon {
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.emptyTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0 0 0.5rem 0;
+}
+
+.emptyText {
+  font-size: 0.875rem;
+  margin: 0;
+  max-width: 300px;
+}

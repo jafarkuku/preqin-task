@@ -1,0 +1,103 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0;
+  padding: 0;
+}
+h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  font-size: 0.875rem;
+  margin: 0;
+  padding: 0;
+  letter-spacing: 0.5px;
+}
+
+:root {
+  /* Font families */
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  --font-serif: Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+
+  /* Core Brand Colors */
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(215 25% 15%);
+
+  /* Card & Surface Colors */
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(215 25% 15%);
+
+  /* Interactive Elements */
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(215 25% 15%);
+
+  /* Primary Brand - Professional Blue */
+  --primary: hsl(213 94% 35%);
+  --primary-foreground: hsl(0 0% 100%);
+
+  /* Secondary - Light Gray */
+  --secondary: hsl(210 15% 97%);
+  --secondary-foreground: hsl(215 25% 15%);
+
+  /* Muted Elements */
+  --muted: hsl(210 15% 97%);
+  --muted-foreground: hsl(215 15% 45%);
+
+  /* Accent - Financial Green */
+  --accent: hsl(142 71% 45%);
+  --accent-foreground: hsl(0 0% 100%);
+
+  /* Status Colors */
+  --destructive: hsl(0 84% 60%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --success: hsl(142 71% 45%);
+  --success-foreground: hsl(0 0% 100%);
+  --warning: hsl(38 92% 50%);
+  --warning-foreground: hsl(0 0% 100%);
+
+  /* Asset Class Colors */
+  --hedge-funds: hsl(213 94% 35%);
+  --private-equity: hsl(262 83% 58%);
+  --real-estate: hsl(142 71% 45%);
+  --infrastructure: hsl(25 95% 53%);
+  --natural-resources: hsl(84 81% 44%);
+  --private-debt: hsl(340 82% 52%);
+
+  /* Interface Elements */
+  --border: hsl(214 32% 91%);
+  --input: hsl(214 32% 91%);
+  --ring: hsl(213 94% 35%);
+
+  --radius: 8px;
+
+  --sidebar-background: hsl(0 0% 98%);
+  --sidebar-foreground: hsl(240 5.3% 26.1%);
+  --sidebar-primary: hsl(240 5.9% 10%);
+  --sidebar-primary-foreground: hsl(0 0% 98%);
+  --sidebar-accent: hsl(240 4.8% 95.9%);
+  --sidebar-accent-foreground: hsl(240 5.9% 10%);
+  --sidebar-border: hsl(220 13% 91%);
+  --sidebar-ring: hsl(217.2 91.2% 59.8%);
+}

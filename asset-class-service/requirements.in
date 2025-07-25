@@ -1,0 +1,6 @@
+fastapi
+uvicorn[standard]
+pymongo[srv]==4.10.1
+pydantic
+pydantic-settings
+python-dotenv

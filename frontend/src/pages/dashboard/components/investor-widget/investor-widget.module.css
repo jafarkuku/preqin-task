@@ -1,0 +1,45 @@
+.cellContent {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.investorName {
+  font-weight: 600;
+}
+
+.icon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--muted-foreground);
+}
+
+.badge {
+  display: inline-block;
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.amount {
+  font-weight: 700;
+}
+
+/* Selected row overrides */
+.investorTable :global(.selectedRow) .cellContent {
+  color: var(--primary-foreground) !important;
+}
+
+.investorTable :global(.selectedRow) .badge {
+  background-color: var(--primary-foreground);
+  color: var(--primary);
+}
+
+.investorTable :global(.subtitle) {
+  text-transform: uppercase !important;
+}

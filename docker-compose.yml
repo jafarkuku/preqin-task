@@ -1,0 +1,203 @@
+services:
+  mongodb-asset-classes:
+    image: mongo:7
+    container_name: asset-class-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: asset_classes_db
+    volumes:
+      - asset_classes_data:/data/db
+    networks:
+      - microservices-network
+
+  mongodb-investors:
+    image: mongo:7
+    container_name: investor-mongodb
+    restart: unless-stopped
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_DATABASE: investors_db
+    volumes:
+      - investors_data:/data/db
+    networks:
+      - microservices-network
+
+  asset-class-service:
+    build:
+      context: ./asset-class-service
+      dockerfile: Dockerfile
+    container_name: asset-class-service
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    depends_on:
+      - mongodb-asset-classes
+    environment:
+      - MONGODB_URL=mongodb://mongodb-asset-classes:27017
+      - DATABASE_NAME=asset_classes_db
+      - COLLECTION_NAME=asset_classes
+      - DEBUG=false
+    volumes:
+      - ./asset-class-service:/app
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  investor-service:
+    build:
+      context: ./investor-service
+      dockerfile: Dockerfile
+    container_name: investor-service
+    restart: unless-stopped
+    ports:
+      - "8002:8002"
+    depends_on:
+      - mongodb-investors
+      - redis
+    environment:
+      - MONGODB_URL=mongodb://mongodb-investors:27017
+      - DATABASE_NAME=investors_db
+      - COLLECTION_NAME=investors
+      - REDIS_URL=redis://redis:6379
+      - DEBUG=false
+    volumes:
+      - ./investor-service:/app
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  commitment-service:
+    build:
+      context: ./commitment-service
+      dockerfile: Dockerfile
+    container_name: commitment-service
+    restart: unless-stopped
+    ports:
+      - "8003:8003"
+    depends_on:
+      - asset-class-service
+      - investor-service
+      - redis
+    environment:
+      - DATABASE_URL=sqlite:///./data/commitments.db
+      - INVESTOR_SERVICE_URL=http://investor-service:8002
+      - ASSET_CLASS_SERVICE_URL=http://asset-class-service:8001
+      - REDIS_URL=redis://redis:6379
+      - DEBUG=false
+    volumes:
+      - ./commitment-service:/app
+      - commitment_data:/app/data
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8003/health"]
+      interval: 30s
+      timeout: 30s
+      retries: 5
+
+  graphql-gateway:
+    build:
+      context: ./graphql-gateway
+      dockerfile: Dockerfile
+    container_name: graphql-gateway
+    restart: unless-stopped
+    ports:
+      - "8005:8005"
+    depends_on:
+      - investor-service
+      - commitment-service
+    environment:
+      - INVESTOR_SERVICE_URL=http://investor-service:8002
+      - COMMITMENT_SERVICE_URL=http://commitment-service:8003
+      - ASSET_CLASS_SERVICE_URL=http://asset-class-service:8001
+      - DEBUG=false
+      - GRAPHQL_DEBUG=false
+      - GRAPHQL_PLAYGROUND=true
+    volumes:
+      - ./graphql-gateway:/app
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8005/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  ingestion-service:
+    build:
+      context: ./ingestion-service
+      dockerfile: Dockerfile
+    container_name: ingestion-service
+    restart: unless-stopped
+    ports:
+      - "8004:8004"
+    depends_on:
+      - asset-class-service
+      - investor-service
+      - commitment-service
+    environment:
+      - ASSET_CLASS_SERVICE_URL=http://asset-class-service:8001
+      - INVESTOR_SERVICE_URL=http://investor-service:8002
+      - COMMITMENT_SERVICE_URL=http://commitment-service:8003
+      - DEBUG=false
+    volumes:
+      - ./ingestion-service:/app
+      - ./data.csv:/app/data.csv:ro  # Mount data.csv from project root
+      - ingestion_uploads:/tmp/ingestion_uploads
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8004/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_GRAPHQL_URL=http://localhost:8005/graphql
+    networks:
+      - microservices-network
+
+volumes:
+  asset_classes_data:
+  investors_data:
+  commitment_data:
+  ingestion_uploads:
+
+networks:
+  microservices-network:
+    driver: bridge

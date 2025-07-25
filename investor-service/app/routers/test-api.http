@@ -1,0 +1,10 @@
+### 1. Create Investor - Gryffindor Fund
+POST http://localhost:8002/api/investors/
+Content-Type: application/json
+
+{
+  "name": "Gryffindor Fund",
+  "investor_type": "fund manager",
+  "country": "Singapore"
+}
+

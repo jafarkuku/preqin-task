@@ -1,0 +1,63 @@
+### Create a single commitment
+POST http://localhost:8003/commitments/
+Content-Type: application/json
+
+{
+  "investor_id": "INVESTOR123",
+  "asset_class_id": "ASSETCLASS456",
+  "amount": 1000000,
+  "currency": "USD"
+}
+
+###
+
+### Bulk create commitments
+POST http://localhost:8003/commitments/bulk-create
+Content-Type: application/json
+
+[
+  {
+    "investor_id": "INVESTOR123",
+    "asset_class_id": "ASSETCLASS456",
+    "amount": 500000,
+    "currency": "USD"
+  },
+  {
+    "investor_id": "INVESTOR123",
+    "asset_class_id": "ASSETCLASS789",
+    "amount": 750000,
+    "currency": "GBP"
+  }
+]
+
+###
+
+### Get a commitment by ID
+GET http://localhost:8003/commitments/REPLACE_WITH_COMMITMENT_ID
+Accept: application/json
+
+###
+
+### Get paginated list of commitments (all)
+GET http://localhost:8003/commitments/?page=1&size=20
+Accept: application/json
+
+###
+
+### Get paginated list filtered by investor
+GET http://localhost:8003/api/commitments/?investor_id=30920892-469e-4379-b3f3-421743a3f363
+Accept: application/json
+
+### Get paginated list filtered by investor and asset class
+GET http://localhost:8003/api/commitments/?investor_id=30920892-469e-4379-b3f3-421743a3f363&asset_class_id=8e1a6fa0-dcc8-4c47-b164-af7fac07e408
+Accept: application/json
+
+### Get paginated list filtered by investor and asset class
+GET http://localhost:8003/api/commitments/?investor_id=30920892-469e-4379-b3f3-421743a3f363
+Accept: application/json
+
+###
+
+### Get all commitments by investor
+GET http://localhost:8003/commitments/investor/INVESTOR123?page=1&size=100
+Accept: application/json
