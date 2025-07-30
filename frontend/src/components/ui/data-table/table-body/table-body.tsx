@@ -1,6 +1,7 @@
+import { useMemo } from "react";
 import { type DataTableColumn } from "../libs/types";
 import styles from "./table-body.module.css";
-import clsx from "clsx";
+import { TableRow } from "./table-row/table-row";
 
 interface DataTableBodyProps<T> {
   columns: DataTableColumn<T>[];
@@ -17,41 +18,47 @@ export function DataTableBody<T>({
   selectedRowId,
   getRowKey,
 }: DataTableBodyProps<T>) {
+  const headerRow = useMemo(
+    () => (
+      <tr className={styles.headerRow}>
+        {columns.map((column) => (
+          <th key={column.key} className={styles.headerCell}>
+            {column.header}
+          </th>
+        ))}
+      </tr>
+    ),
+    [columns]
+  );
+
+  const rows = useMemo(() => {
+    return data.map((item, index) => {
+      const rowKey = getRowKey(item);
+      return {
+        item,
+        index,
+        rowKey,
+        isSelected: selectedRowId === rowKey,
+      };
+    });
+  }, [data, selectedRowId, getRowKey]);
+
   return (
     <div className={styles.tableContainer}>
       <table className={styles.table}>
-        <thead>
-          <tr className={styles.headerRow}>
-            {columns.map((column) => (
-              <th key={column.key} className={styles.headerCell}>
-                {column.header}
-              </th>
-            ))}
-          </tr>
-        </thead>
+        <thead>{headerRow}</thead>
         <tbody>
-          {data.map((item, index) => {
-            const rowKey = getRowKey(item);
-            const isSelected = selectedRowId === rowKey;
-
-            return (
-              <tr
-                key={rowKey}
-                className={clsx(
-                  styles.row,
-                  isSelected && styles.selectedRow,
-                  onRowClick && styles.clickableRow
-                )}
-                onClick={() => onRowClick?.(item)}
-              >
-                {columns.map((column) => (
-                  <td key={column.key} className={styles.cell}>
-                    {column.render(item, index)}
-                  </td>
-                ))}
-              </tr>
-            );
-          })}
+          {rows.map(({ item, index, rowKey, isSelected }) => (
+            <TableRow
+              key={rowKey}
+              item={item}
+              index={index}
+              columns={columns}
+              onRowClick={onRowClick}
+              isSelected={isSelected}
+              rowKey={rowKey}
+            />
+          ))}
         </tbody>
       </table>
     </div>

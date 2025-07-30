@@ -27,7 +27,7 @@ export const CommitmentWidget = ({ investorId = "" }: CommitmentWidgetProps) => 
     setSelectedAsset("all");
   }, [investorId]);
 
-  if (!data?.commitmentBreakdown) {
+  if (!data?.commitmentBreakdown?.commitments.length) {
     return (
       <DataTable
         title="Commitment Breakdown"
@@ -48,13 +48,13 @@ export const CommitmentWidget = ({ investorId = "" }: CommitmentWidgetProps) => 
   }
 
   const {
-    commitmentBreakdown: { investorName, totalCommitmentAmount, commitments, assets },
+    commitmentBreakdown: { investorName, totalCommitmentAmount, assets },
   } = data;
 
-  const filteredCommitments =
+  const commitments =
     selectedAsset === "all"
-      ? commitments
-      : commitments.filter((commitment) => commitment.assetClassId === selectedAsset);
+      ? data.commitmentBreakdown.commitments
+      : data.commitmentBreakdown.commitments.filter((commitment) => commitment.assetClassId === selectedAsset);
 
   const totalAmount =
     selectedAsset === "all"
@@ -74,7 +74,7 @@ export const CommitmentWidget = ({ investorId = "" }: CommitmentWidgetProps) => 
         />
       }
       columns={columns}
-      data={filteredCommitments}
+      data={commitments}
       getRowKey={(row) => row.id}
       className={styles.CommitmentWidget}
     />

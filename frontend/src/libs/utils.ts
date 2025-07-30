@@ -9,3 +9,10 @@ export const formatCurrency = (amount: number): string => {
     return `£${amount.toLocaleString()}`;
   }
 };
+
+export function capitalizeWords(phrase: string): string {
+  return phrase
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+}

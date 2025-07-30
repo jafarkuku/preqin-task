@@ -1,7 +1,7 @@
 import { Building2, MapPin, Calendar } from "lucide-react";
 
 import { type DataTableColumn } from "@/components/ui/data-table";
-import { formatCurrency } from "@/libs/utils";
+import { capitalizeWords, formatCurrency } from "@/libs/utils";
 import type { InvestorFromQuery } from "@/libs/types";
 
 import styles from "../investor-widget.module.css";
@@ -20,7 +20,7 @@ export const columns: DataTableColumn<InvestorFromQuery>[] = [
     render: (investor) => (
       <div className={styles.cellContent}>
         <Building2 className={styles.icon} />
-        <span className={styles.capitalized}>{investor.investorType}</span>
+        <span className={styles.capitalized}>{capitalizeWords(investor.investorType)}</span>
       </div>
     ),
   },

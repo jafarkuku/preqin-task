@@ -1,9 +1,9 @@
 import type { DataTableColumn } from "@/components/ui/data-table";
-import { ASSET_CLASS_COLORS } from "@/libs/constants";
 
-import styles from "../commitment-widget.module.css";
-import { formatCurrency } from "@/libs/utils";
 import type { CommitmentDetail } from "@/graphql/generated/graphql";
+import { formatCurrency } from "@/libs/utils";
+import { PackageSearch } from "lucide-react";
+import styles from "../commitment-widget.module.css";
 
 export const columns: DataTableColumn<CommitmentDetail>[] = [
   {
@@ -16,14 +16,7 @@ export const columns: DataTableColumn<CommitmentDetail>[] = [
     header: "Asset Class",
     render: ({ name }) => (
       <div className={styles.assetClassCell}>
-        <div
-          className={styles.colorIndicator}
-          style={{
-            backgroundColor: `var(--${ASSET_CLASS_COLORS[
-              name as keyof typeof ASSET_CLASS_COLORS
-            ].replace("bg-", "")})`,
-          }}
-        />
+        <PackageSearch className={styles.icon} />
         <span className={styles.assetClassName}>{name}</span>
       </div>
     ),
@@ -36,9 +29,7 @@ export const columns: DataTableColumn<CommitmentDetail>[] = [
   {
     key: "amount",
     header: "Amount",
-    render: (row) => (
-      <span className={styles.amount}>{formatCurrency(row.amount)}</span>
-    ),
+    render: (row) => <span className={styles.amount}>{formatCurrency(row.amount)}</span>,
   },
   {
     key: "percentage",
@@ -47,10 +38,7 @@ export const columns: DataTableColumn<CommitmentDetail>[] = [
       <div className={styles.percentageCell}>
         <span className={styles.percentage}>{percentage}%</span>
         <div className={styles.progressBar}>
-          <div
-            className={styles.progressFill}
-            style={{ width: `${percentage}%` }}
-          />
+          <div className={styles.progressFill} style={{ width: `${percentage}%` }} />
         </div>
       </div>
     ),

@@ -63,4 +63,5 @@
   font-size: 0.875rem;
   color: var(--foreground);
   vertical-align: middle;
+  text-align: left;
 }
